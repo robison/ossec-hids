@@ -35,6 +35,7 @@ typedef struct _Eventinfo {
     char *status;
     char *command;
     char *url;
+    char *exe;
     char *data;
     char *systemname;
 
@@ -145,6 +146,7 @@ void *Protocol_FP(Eventinfo *lf, char *field);
 void *Action_FP(Eventinfo *lf, char *field);
 void *ID_FP(Eventinfo *lf, char *field);
 void *Url_FP(Eventinfo *lf, char *field);
+void *Exe_FP(Eventinfo *lf, char *field);
 void *Data_FP(Eventinfo *lf, char *field);
 void *Status_FP(Eventinfo *lf, char *field);
 void *SystemName_FP(Eventinfo *lf, char *field);

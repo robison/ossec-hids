@@ -39,6 +39,8 @@ char *Eventinfo_to_jsonstr(const Eventinfo *lf)
     if (lf->generated_rule->info) {
         cJSON_AddStringToObject(rule, "info", lf->generated_rule->info);
     }
+    if (lf->time) {
+        cJSON_AddNumberToObject(rule, "time", lf->time);
 
     if (lf->action) {
         cJSON_AddStringToObject(root, "action", lf->action);
@@ -63,6 +65,12 @@ char *Eventinfo_to_jsonstr(const Eventinfo *lf)
     }
     if (lf->location) {
         cJSON_AddStringToObject(root, "location", lf->location);
+    }
+    if (lf->url) {
+        cJSON_AddStringToObject(rule, "url", lf->url);
+    }
+    if (lf->exe) {
+        cJSON_AddStringToObject(rule, "exe", lf->exe);
     }
     if (lf->full_log) {
         cJSON_AddStringToObject(root, "full_log", lf->full_log);

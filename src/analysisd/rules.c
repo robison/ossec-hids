@@ -72,6 +72,7 @@ int Rules_OP_ReadRules(const char *rulefile)
     const char *xml_dstport = "dstport";
     const char *xml_user = "user";
     const char *xml_url = "url";
+    const char *xml_exe = "exe";
     const char *xml_id = "id";
     const char *xml_data = "extra_data";
     const char *xml_hostname = "hostname";
@@ -309,6 +310,7 @@ int Rules_OP_ReadRules(const char *rulefile)
                 char *regex = NULL;
                 char *match = NULL;
                 char *url = NULL;
+		char *exe = NULL;
                 char *if_matched_regex = NULL;
                 char *if_matched_group = NULL;
                 char *user = NULL;
@@ -602,6 +604,8 @@ int Rules_OP_ReadRules(const char *rulefile)
                                         rule_type = RULE_USER;
                                     } else if (strcasecmp(rule_opt[k]->values[list_att_num], xml_url) == 0) {
                                         rule_type = RULE_URL;
+                                    } else if (strcasecmp(rule_opt[k]->values[list_att_num], xml_exe) == 0) {
+                                        rule_type = RULE_EXE;
                                     } else if (strcasecmp(rule_opt[k]->values[list_att_num], xml_id) == 0) {
                                         rule_type = RULE_ID;
                                     } else if (strcasecmp(rule_opt[k]->values[list_att_num], xml_hostname) == 0) {
@@ -633,7 +637,7 @@ int Rules_OP_ReadRules(const char *rulefile)
                                         return (-1);
                                     }
                                 } else {
-                                    merror("%s:List feild=\"%s\" is not valid", ARGV0,
+                                    merror("%s:List field=\"%s\" is not valid", ARGV0,
                                            rule_opt[k]->values[list_att_num]);
                                     merror(INVALID_CONFIG, ARGV0,
                                            rule_opt[k]->element, rule_opt[k]->content);
@@ -659,7 +663,7 @@ int Rules_OP_ReadRules(const char *rulefile)
                                 return (-1);
                             }
                         } else {
-                            merror("%s:List must have a correctly formatted feild attribute",
+                            merror("%s:List must have a correctly formatted field attribute",
                                    ARGV0);
                             merror(INVALID_CONFIG,
                                    ARGV0,
@@ -1088,6 +1092,19 @@ int Rules_OP_ReadRules(const char *rulefile)
                     url = NULL;
                 }
 
+                /* Add in executable */
+                if (exe) {
+                    os_calloc(1, sizeof(OSMatch), config_ruleinfo->exe);
+                    if (!OSMatch_Compile(exe, config_ruleinfo->exe, 0)) {
+                        merror(REGEX_COMPILE, ARGV0, exe,
+                               config_ruleinfo->exe->error);
+                        return (-1);
+                    }
+                    free(exe);
+                    exe = NULL;
+                }
+
+
                 /* Add matched_group */
                 if (if_matched_group) {
                     os_calloc(1, sizeof(OSMatch),
@@ -1370,6 +1387,7 @@ RuleInfo *zerorulemember(int id, int level,
     ruleinfo_pt->dstip = NULL;
     ruleinfo_pt->dstport = NULL;
     ruleinfo_pt->url = NULL;
+    ruleinfo_pt->exe = NULL;
     ruleinfo_pt->id = NULL;
     ruleinfo_pt->status = NULL;
     ruleinfo_pt->hostname = NULL;

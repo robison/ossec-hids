@@ -125,6 +125,7 @@ typedef struct _RuleInfo {
     OSMatch *dstport;
     OSMatch *user;
     OSMatch *url;
+    OSMatch *exe;
     OSMatch *id;
     OSMatch *status;
     OSMatch *hostname;

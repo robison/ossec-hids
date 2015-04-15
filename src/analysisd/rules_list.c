@@ -296,6 +296,7 @@ int OS_AddRuleInfo(RuleNode *r_node, RuleInfo *newrule, int sid)
             r_node->ruleinfo->dstport = newrule->dstport;
             r_node->ruleinfo->user = newrule->user;
             r_node->ruleinfo->url = newrule->url;
+	    r_node->ruleinfo->exe = newrule->exe;
             r_node->ruleinfo->id = newrule->id;
             r_node->ruleinfo->status = newrule->status;
             r_node->ruleinfo->hostname = newrule->hostname;
