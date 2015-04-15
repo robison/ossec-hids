@@ -347,6 +347,18 @@ void *Url_FP(Eventinfo *lf, char *field)
     return (NULL);
 }
 
+void *Exe_FP(Eventinfo *lf, char *field)
+{
+#ifdef TESTRULE
+    if (!alert_only) {
+        print_out("       exe: '%s'", field);
+    }
+#endif
+
+    lf->exe = field;
+    return (NULL);
+}
+
 void *Data_FP(Eventinfo *lf, char *field)
 {
 #ifdef TESTRULE

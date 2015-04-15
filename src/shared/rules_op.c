@@ -54,6 +54,7 @@ int OS_ReadXMLRules(const char *rulefile,
     const char *xml_dstport = "dstport";
     const char *xml_user = "user";
     const char *xml_url = "url";
+    const char *xml_exe = "exe";
     const char *xml_id = "id";
     const char *xml_data = "extra_data";
     const char *xml_hostname = "hostname";
@@ -177,7 +178,7 @@ int OS_ReadXMLRules(const char *rulefile,
         while (rule[j]) {
             /* Rules options */
             int k = 0;
-            char *regex = NULL, *match = NULL, *url = NULL,
+            char *regex = NULL, *match = NULL, *url = NULL, *exe = NULL,
                   *if_matched_regex = NULL, *if_matched_group = NULL,
                    *user = NULL, *id = NULL, *srcport = NULL,
                     *dstport = NULL, *status = NULL, *hostname = NULL,
@@ -396,8 +397,10 @@ int OS_ReadXMLRules(const char *rulefile,
                                       rule_opt[k]->content);
                 } else if (strcasecmp(rule_opt[k]->element, xml_url) == 0) {
                     url = os_LoadString(url, rule_opt[k]->content);
-                }
-
+                } else if (strcasecmp(rule_opt[k]->element, xml_exe) == 0) {
+		    exe = os_LoadString(exe, rule_opt[k]->content);
+		}
+		
                 else if (strcasecmp(rule_opt[k]->element, xml_compiled) == 0) {
                     /* Not using this in here */
                 }
@@ -804,6 +807,18 @@ int OS_ReadXMLRules(const char *rulefile,
                 url = NULL;
             }
 
+            if (exe) {
+                os_calloc(1, sizeof(OSMatch), config_ruleinfo->exe);
+                if (!OSMatch_Compile(exe, config_ruleinfo->exe, 0)) {
+                    merror(REGEX_COMPILE, __local_name, exe,
+                           config_ruleinfo->exe->error);
+                    return (-1);
+                }
+                free(exe);
+                exe = NULL;
+            }
+
+
             /* Add matched_group */
             if (if_matched_group) {
                 os_calloc(1, sizeof(OSMatch), config_ruleinfo->if_matched_group);
@@ -911,6 +926,7 @@ static RuleInfo *_OS_AllocateRule()
     ruleinfo_pt->dstip = NULL;
     ruleinfo_pt->dstport = NULL;
     ruleinfo_pt->url = NULL;
+    ruleinfo_pt->exe = NULL;
     ruleinfo_pt->id = NULL;
     ruleinfo_pt->status = NULL;
     ruleinfo_pt->hostname = NULL;

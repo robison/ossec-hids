@@ -1042,6 +1042,7 @@ RuleInfo *OS_CheckIfRuleMatch(Eventinfo *lf, RuleNode *curr_node)
      * word match (fast regex),
      * regex,
      * url,
+     * exe,
      * id,
      * user,
      * maxsize,
@@ -1132,6 +1133,17 @@ RuleInfo *OS_CheckIfRuleMatch(Eventinfo *lf, RuleNode *curr_node)
         }
 
         if (!OSMatch_Execute(lf->url, strlen(lf->url), rule->url)) {
+            return (NULL);
+        }
+    }
+
+    /* Checking for which executable */
+    if (rule->exe) {
+        if (!lf->exe) {
+            return (NULL);
+        }
+
+        if (!OSMatch_Execute(lf->exe, strlen(lf->exe), rule->exe)) {
             return (NULL);
         }
     }

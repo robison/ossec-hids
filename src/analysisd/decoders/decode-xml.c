@@ -469,6 +469,8 @@ int ReadDecodeXML(const char *file)
                         pi->order[order_int] = (void (*)(void *, char *)) ID_FP;
                     } else if (strstr(*norder, "url") != NULL) {
                         pi->order[order_int] = (void (*)(void *, char *)) Url_FP;
+                    } else if (strstr(*norder, "exe") != NULL) {
+                        pi->order[order_int] = (void (*)(void *, char *)) Exe_FP;
                     } else if (strstr(*norder, "data") != NULL) {
                         pi->order[order_int] = (void (*)(void *, char *)) Data_FP;
                     } else if (strstr(*norder, "extra_data") != NULL) {
