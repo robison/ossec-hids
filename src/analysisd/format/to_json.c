@@ -41,7 +41,7 @@ char *Eventinfo_to_jsonstr(const Eventinfo *lf)
     }
     if (lf->time) {
         cJSON_AddNumberToObject(rule, "time", lf->time);
-
+    }
     if (lf->action) {
         cJSON_AddStringToObject(root, "action", lf->action);
     }
