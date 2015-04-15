@@ -40,7 +40,11 @@ char *Eventinfo_to_jsonstr(const Eventinfo *lf)
         cJSON_AddStringToObject(rule, "info", lf->generated_rule->info);
     }
     if (lf->time) {
+<<<<<<< HEAD
         cJSON_AddNumberToObject(rule, "time", lf->time);
+=======
+        cJSON_AddStringToObject(rule, "time", lf->time);
+>>>>>>> 305672c2b5b637662ac98678a9be2e985f8e3768
 
     if (lf->action) {
         cJSON_AddStringToObject(root, "action", lf->action);
